@@ -1,14 +1,3 @@
-_G.selectItems = {
-    "Enchant Relic",
-    "Lunar Thread"
-}
-
-_G.highlightItems = {
-    "Aurora Totem"
-}
-
-_G.webhookURL = "https://discordapp.com/api/webhooks/1314086370985246720/syawg53o8nPNKXaZRsuw6JTXPSLjxaSUKthexnvzaaBb8Ou9WuFyuCWyL5tDuaudWUlN"
-
 local HttpService = game:GetService("HttpService")
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
