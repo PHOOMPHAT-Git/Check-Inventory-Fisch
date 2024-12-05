@@ -1,11 +1,20 @@
+_G.selectItems = {
+    "Enchant Relic",
+    "Lunar Thread"
+}
+
+_G.highlightItems = {
+    "Aurora Totem"
+}
+
+_G.webhookURL = "https://discordapp.com/api/webhooks/1314086370985246720/syawg53o8nPNKXaZRsuw6JTXPSLjxaSUKthexnvzaaBb8Ou9WuFyuCWyL5tDuaudWUlN"
+
 local HttpService = game:GetService("HttpService")
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local player = game.Players.LocalPlayer
 
 player.CameraMaxZoomDistance = 1000
-
-webhookURL = _G.webhookURL,
 
 local httpRequest = (syn and syn.request) or (http and http.request) or http_request or (fluxus and fluxus.request)
 
@@ -88,7 +97,7 @@ local formattedExpValue = formatNumberWithCommas(playerexpValue)
 local setspawnlocationValue = formatNumberWithCommas(spawnlocationValue)
 
 local function highlightItemName(itemName)
-    if table.find(highlightItems, itemName) then
+    if table.find(_G.highlightItems, itemName) then
         return "- " .. itemName .. ""
     else
         return itemName
@@ -100,7 +109,7 @@ local moreItemsText2 = ""
 
 local itemCount = 0
 for itemName, count in pairs(itemCounts) do
-    if not table.find(selectItems, itemName) then
+    if not table.find(_G.selectItems, itemName) then
         itemCount = itemCount + 1
         local highlightedItemName = highlightItemName(itemName)
         if itemCount <= 40 then
@@ -172,7 +181,7 @@ table.insert(mainFields, {
     inline = false
 })
 
-for _, itemName in ipairs(selectItems) do
+for _, itemName in ipairs(_G.selectItems) do
     local count = itemCounts[itemName] or 0
     local formattedCashCount = formatNumberWithCommas(count)
     table.insert(mainFields, {
@@ -189,7 +198,9 @@ local playerInfoField = {
 }
 
 local payload = {
-    content = "",
+    username = "Check Inventory | PHE",
+    avatar_url = "https://github.com/PHOOMPHAT-Git/New-Phe-web-code/blob/main/Juice.png?raw=true",
+    content = "By Phoomphat",
     embeds = {
         {
             title = "[** PHE BOT **]",
@@ -234,7 +245,7 @@ print("Payload being sent :")
 print(HttpService:JSONEncode(payload))
 
 local response = httpRequest({
-    Url = webhookURL,
+    Url = _G.webhookURL,
     Method = "POST",
     Headers = {
         ["Content-Type"] = "application/json"
