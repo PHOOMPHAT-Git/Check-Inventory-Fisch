@@ -5,7 +5,7 @@ local player = game.Players.LocalPlayer
 
 player.CameraMaxZoomDistance = 1000
 
-local webhookURL = "https://discordapp.com/api/webhooks/1314086370985246720/syawg53o8nPNKXaZRsuw6JTXPSLjxaSUKthexnvzaaBb8Ou9WuFyuCWyL5tDuaudWUlN"
+webhookURL = _G.webhookURL,
 
 local httpRequest = (syn and syn.request) or (http and http.request) or http_request or (fluxus and fluxus.request)
 
