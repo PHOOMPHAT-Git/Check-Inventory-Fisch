@@ -51,10 +51,21 @@ local function countSpecialItems(player, specialItemNames)
     end
 
     local specialItemCounts = {}
+    local seenItems = {}
+    
+    local uniqueSpecialItemNames = {}
     for _, specialItem in ipairs(specialItemNames) do
+        local cleanName = cleanItemName(specialItem)
+        if not seenItems[cleanName] then
+            table.insert(uniqueSpecialItemNames, specialItem)
+            seenItems[cleanName] = true
+        end
+    end
+
+    for _, specialItem in ipairs(uniqueSpecialItemNames) do
         local count = 0
         for _, item in ipairs(inventory:GetChildren()) do
-            if item:IsA("StringValue") and cleanItemName(item.Name) == specialItem then
+            if item:IsA("StringValue") and cleanItemName(item.Name) == cleanItemName(specialItem) then
                 count += 1
             end
         end
@@ -74,8 +85,6 @@ local specialItemName = {
     "The Depths Key",
     "Treasure Map"
 }
-
-local specialItemCounts = countSpecialItems(player, specialItemName)
 
 local playerStats = ReplicatedStorage:FindFirstChild("playerstats")
 local coins = playerStats and playerStats:FindFirstChild(player.Name) and playerStats[player.Name]:FindFirstChild("Stats") and playerStats[player.Name].Stats:FindFirstChild("coins")
@@ -119,14 +128,6 @@ local moreItemsText1 = ""
 local moreItemsText2 = ""
 local moreItemsText3 = ""
 
-local function highlightSpecialItemName(itemName)
-    if table.find(_G.highlightItems, itemName) then
-        return "- " .. itemName .. ""
-    else
-        return itemName
-    end
-end
-
 local function highlightItemName(itemName)
     if table.find(_G.highlightItems, itemName) then
         return "- " .. itemName .. ""
@@ -146,21 +147,6 @@ for itemName, count in pairs(itemCounts) do
             moreItemsText2 = moreItemsText2 .. highlightedItemName .. " : " .. formatNumberWithCommas(count) .. "\n"
         else
             moreItemsText3 = moreItemsText3 .. highlightedItemName .. " : " .. formatNumberWithCommas(count) .. "\n"
-        end
-    end
-end
-
-for specialItem, count in pairs(specialItemCounts) do
-    if count > 0 then
-        local highlightedSpecialItemName = highlightSpecialItemName(specialItem)
-        local formattedCount = formatNumberWithCommas(count)
-        
-        if itemCount <= 40 then
-            moreItemsText1 = moreItemsText1 .. highlightedSpecialItemName .. " : " .. formattedCount .. "\n"
-        elseif itemCount <= 80 then
-            moreItemsText2 = moreItemsText2 .. highlightedSpecialItemName .. " : " .. formattedCount .. "\n"
-        else
-            moreItemsText3 = moreItemsText3 .. highlightedSpecialItemName .. " : " .. formattedCount .. "\n"
         end
     end
 end
