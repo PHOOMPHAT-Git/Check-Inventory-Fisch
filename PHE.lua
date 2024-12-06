@@ -240,7 +240,7 @@ local payload = {
             title = "[** Check Inventory **]",
             type = "rich",
             description = "Made by Phoomphat",
-            color = tonumber(0x808080),
+            color = tonumber(0xFF0000),
             fields = {
                 {name = "------------------------------------------", value = "", inline = false},
                 playerInfoField,
@@ -291,6 +291,15 @@ local payload = {
                     value = moreItemsText3 ~= "" and moreItemsText3 or "No additional items.",
                     inline = false
                 }
+            }
+        },
+        {
+            title = "[** Check Inventory **]",
+            type = "rich",
+            color = tonumber(0x0000FF),
+            fields = {
+                {name = "------------------------------------------", value = "\n\n" .. Time .. "\n\n" .. Date .. "\n\n", inline = false},
+                playerInfoField,
             }
         }
     }
