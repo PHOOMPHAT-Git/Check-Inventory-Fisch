@@ -87,7 +87,7 @@ local setspawnlocationValue = formatNumberWithCommas(spawnlocationValue)
 
 local function highlightItemName(itemName)
     if table.find(_G.highlightItems, itemName) then
-        return "- " .. itemName .. ""
+        return "-" .. itemName .. ""
     else
         return itemName
     end
