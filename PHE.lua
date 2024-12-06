@@ -228,20 +228,31 @@ local playerInfoField = {
     inline = false
 }
 
+local Time = os.date("%H:%M:%S")
+local Date = os.date("%Y-%m-%d")
+
 local payload = {
     username = "Check Inventory | PHE",
     avatar_url = "https://github.com/PHOOMPHAT-Git/New-Phe-web-code/blob/main/Juice.png?raw=true",
-    content = "By Phoomphat",
+    content = "By Phoomphat" .. "\n\n" .. Time .. "\n\n" .. Date,
     embeds = {
         {
-            title = "[** PHE BOT **]",
+            title = "[** Check Inventory **]",
             type = "rich",
             description = "Made by Phoomphat",
             color = tonumber(0x808080),
             fields = {
+                {name = "------------------------------------------", value = "", inline = false},
                 playerInfoField,
+            }
+        },
+        {
+            title = "[** Player Status **]",
+            type = "rich",
+            color = tonumber(0x808080),
+            fields = {
                 unpack(mainFields)
-            },
+            }
         },
         {
             title = "[** More Items 1 **]",
