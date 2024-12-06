@@ -40,12 +40,42 @@ local function countItemsInInventory(player)
     return itemCounts
 end
 
+local function countSpecialItems(player, specialItemNames)
+    local inventory = ReplicatedStorage:FindFirstChild("playerstats")
+        :FindFirstChild(player.Name)
+        :FindFirstChild("Inventory")
+    
+    if not inventory then
+        warn("Inventory not found for player :", player.Name)
+        return {}
+    end
+
+    local specialItemCounts = {}
+    for _, specialItem in ipairs(specialItemNames) do
+        local count = 0
+        for _, item in ipairs(inventory:GetChildren()) do
+            if item:IsA("StringValue") and cleanItemName(item.Name) == specialItem then
+                count += 1
+            end
+        end
+        specialItemCounts[specialItem] = count
+    end
+
+    return specialItemCounts
+end
+
 local function formatNumberWithCommas(num)
     local numStr = tostring(num)
     return numStr:reverse():gsub("(%d%d%d)", "%1,"):reverse():gsub("^,", "")
 end
 
 local itemCounts = countItemsInInventory(player)
+local specialItemName = {
+    "The Depths Key",
+    "Treasure Map"
+}
+
+local specialItemCounts = countSpecialItems(player, specialItemName)
 
 local playerStats = ReplicatedStorage:FindFirstChild("playerstats")
 local coins = playerStats and playerStats:FindFirstChild(player.Name) and playerStats[player.Name]:FindFirstChild("Stats") and playerStats[player.Name].Stats:FindFirstChild("coins")
@@ -85,7 +115,11 @@ local formattedCrabCagesValue = formatNumberWithCommas(crabcagesopenedValue)
 local formattedExpValue = formatNumberWithCommas(playerexpValue)
 local setspawnlocationValue = formatNumberWithCommas(spawnlocationValue)
 
-local function highlightItemName(itemName)
+local moreItemsText1 = ""
+local moreItemsText2 = ""
+local moreItemsText3 = ""
+
+local function highlightSpecialItemName(itemName)
     if table.find(_G.highlightItems, itemName) then
         return "- " .. itemName .. ""
     else
@@ -93,9 +127,13 @@ local function highlightItemName(itemName)
     end
 end
 
-local moreItemsText1 = ""
-local moreItemsText2 = ""
-local moreItemsText3 = ""
+local function highlightItemName(itemName)
+    if table.find(_G.highlightItems, itemName) then
+        return "- " .. itemName .. ""
+    else
+        return itemName
+    end
+end
 
 local itemCount = 0
 for itemName, count in pairs(itemCounts) do
@@ -109,6 +147,19 @@ for itemName, count in pairs(itemCounts) do
         else
             moreItemsText3 = moreItemsText3 .. highlightedItemName .. " : " .. formatNumberWithCommas(count) .. "\n"
         end
+    end
+end
+
+for specialItem, count in pairs(specialItemCounts) do
+    local highlightedSpecialItemName = highlightSpecialItemName(specialItem)
+    local formattedCount = formatNumberWithCommas(count)
+    
+    if itemCount <= 40 then
+        moreItemsText1 = moreItemsText1 .. highlightedSpecialItemName .. " : " .. formattedCount .. "\n"
+    elseif itemCount <= 80 then
+        moreItemsText2 = moreItemsText2 .. highlightedSpecialItemName .. " : " .. formattedCount .. "\n"
+    else
+        moreItemsText3 = moreItemsText3 .. highlightedSpecialItemName .. " : " .. formattedCount .. "\n"
     end
 end
 
