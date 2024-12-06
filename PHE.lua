@@ -151,15 +151,17 @@ for itemName, count in pairs(itemCounts) do
 end
 
 for specialItem, count in pairs(specialItemCounts) do
-    local highlightedSpecialItemName = highlightSpecialItemName(specialItem)
-    local formattedCount = formatNumberWithCommas(count)
-    
-    if itemCount <= 40 then
-        moreItemsText1 = moreItemsText1 .. highlightedSpecialItemName .. " : " .. formattedCount .. "\n"
-    elseif itemCount <= 80 then
-        moreItemsText2 = moreItemsText2 .. highlightedSpecialItemName .. " : " .. formattedCount .. "\n"
-    else
-        moreItemsText3 = moreItemsText3 .. highlightedSpecialItemName .. " : " .. formattedCount .. "\n"
+    if count > 0 then
+        local highlightedSpecialItemName = highlightSpecialItemName(specialItem)
+        local formattedCount = formatNumberWithCommas(count)
+        
+        if itemCount <= 40 then
+            moreItemsText1 = moreItemsText1 .. highlightedSpecialItemName .. " : " .. formattedCount .. "\n"
+        elseif itemCount <= 80 then
+            moreItemsText2 = moreItemsText2 .. highlightedSpecialItemName .. " : " .. formattedCount .. "\n"
+        else
+            moreItemsText3 = moreItemsText3 .. highlightedSpecialItemName .. " : " .. formattedCount .. "\n"
+        end
     end
 end
 
