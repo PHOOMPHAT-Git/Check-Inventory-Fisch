@@ -95,6 +95,7 @@ end
 
 local moreItemsText1 = ""
 local moreItemsText2 = ""
+local moreItemsText3 = ""
 
 local itemCount = 0
 for itemName, count in pairs(itemCounts) do
@@ -103,8 +104,10 @@ for itemName, count in pairs(itemCounts) do
         local highlightedItemName = highlightItemName(itemName)
         if itemCount <= 40 then
             moreItemsText1 = moreItemsText1 .. highlightedItemName .. " : " .. formatNumberWithCommas(count) .. "\n"
-        else
+        elseif itemCount <= 80 then
             moreItemsText2 = moreItemsText2 .. highlightedItemName .. " : " .. formatNumberWithCommas(count) .. "\n"
+        else
+            moreItemsText3 = moreItemsText3 .. highlightedItemName .. " : " .. formatNumberWithCommas(count) .. "\n"
         end
     end
 end
@@ -223,6 +226,19 @@ local payload = {
                 {
                     name = "------------------------------------------",
                     value = moreItemsText2 ~= "" and moreItemsText2 or "No additional items.",
+                    inline = false
+                }
+            }
+        },
+        {
+            title = "[** More Items 3 **]",
+            type = "rich",
+            description = "Made by Phoomphat",
+            color = tonumber(0x808080),
+            fields = {
+                {
+                    name = "------------------------------------------",
+                    value = moreItemsText3 ~= "" and moreItemsText3 or "No additional items.",
                     inline = false
                 }
             }
