@@ -228,7 +228,7 @@ local playerInfoField = {
     inline = false
 }
 
-local Time = os.date("%H:%M:%S")
+local Time = os.date("%H:%M")
 local Date = os.date("%Y-%m-%d")
 
 local payload = {
