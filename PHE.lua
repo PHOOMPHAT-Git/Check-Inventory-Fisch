@@ -151,7 +151,9 @@ for itemName, count in pairs(itemCounts) do
     end
 end
 
+local secondaryFields = {}
 local mainFields = {}
+
 table.insert(mainFields, {
     name = "Rod",
     value = formattedRodValue,
@@ -171,8 +173,14 @@ table.insert(mainFields, {
 })
 
 table.insert(mainFields, {
-    name = "Spawn location",
-    value = setspawnlocationValue,
+    name = "Coins",
+    value = formattedCoinValue .. " C$",
+    inline = false
+})
+
+table.insert(mainFields, {
+    name = "------------------------------------------",
+    value = "",
     inline = false
 })
 
@@ -195,19 +203,31 @@ table.insert(mainFields, {
 })
 
 table.insert(mainFields, {
+    name = "------------------------------------------",
+    value = "",
+    inline = false
+})
+
+table.insert(mainFields, {
+    name = "Spawn location",
+    value = setspawnlocationValue,
+    inline = false
+})
+
+table.insert(mainFields, {
     name = "Crab Cages Opened",
     value = formattedCrabCagesValue,
     inline = false
 })
 
-table.insert(mainFields, {
-    name = "Coins",
-    value = formattedCoinValue .. " C$",
+table.insert(secondaryFields, {
+    name = "------------------------------------------",
+    value = "",
     inline = false
 })
 
-table.insert(mainFields, {
-    name = "------------------------------------------",
+table.insert(secondaryFields, {
+    name = "[** The items you have selected are here **]",
     value = "",
     inline = false
 })
@@ -215,7 +235,7 @@ table.insert(mainFields, {
 for _, itemName in ipairs(_G.selectItems) do
     local count = itemCounts[itemName] or 0
     local formattedCashCount = formatNumberWithCommas(count)
-    table.insert(mainFields, {
+    table.insert(secondaryFields, {
         name = itemName,
         value = "Count : " .. formattedCashCount,
         inline = false
@@ -234,7 +254,7 @@ local Date = os.date("%Y-%m-%d")
 local payload = {
     username = "Check Inventory | PHE",
     avatar_url = "https://github.com/PHOOMPHAT-Git/New-Phe-web-code/blob/main/Juice.png?raw=true",
-    content = "By Phoomphat" .. "\n\n" .. Time .. "\n\n" .. Date,
+    content = "\n\n" .. Time .. "\n\n" .. Date,
     embeds = {
         {
             title = "[** Check Inventory **]",
@@ -298,8 +318,9 @@ local payload = {
             type = "rich",
             color = tonumber(0x0000FF),
             fields = {
-                {name = "------------------------------------------", value = "\n\n" .. Time .. "\n\n" .. Date .. "\n\n", inline = false},
                 playerInfoField,
+                {name = "------------------------------------------", value = "\n\n" .. Time .. "\n\n" .. Date .. "\n\n", inline = false},
+                unpack(secondaryFields),
             }
         }
     }
