@@ -267,7 +267,7 @@ local payload = {
             }
         },
         {
-            title = "[** Player Status **]",
+            title = "[** Player Info **]",
             type = "rich",
             color = tonumber(0x808080),
             fields = {
