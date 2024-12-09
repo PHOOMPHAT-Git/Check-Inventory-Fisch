@@ -330,7 +330,7 @@ print("Payload being sent :")
 print(HttpService:JSONEncode(payload))
 
 local response = httpRequest({
-    Url = _G.webhookURL,
+    Url = _G.CheckInventory_WebhookURL,
     Method = "POST",
     Headers = {
         ["Content-Type"] = "application/json"
