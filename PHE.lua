@@ -17,14 +17,14 @@ local function countItemsInInventory(player)
         :FindFirstChild("Inventory")
     
     if not inventory then
-        warn("Inventory not found for player :", player.Name)
+        warn("Inventory not found for player:", player.Name)
         return {}
     end
 
     local itemCounts = {}
     for _, item in ipairs(inventory:GetChildren()) do
         if item:IsA("StringValue") and item:FindFirstChild("Stack") and item.Stack:IsA("NumberValue") then
-            local cleanName = cleanItemName(item.Name)
+            local cleanName = cleanItemName(item.Name)  -- ลบตัวเลขจากชื่อ
             local stackValue = item.Stack.Value
             
             if itemCounts[cleanName] then
@@ -32,47 +32,32 @@ local function countItemsInInventory(player)
             else
                 itemCounts[cleanName] = stackValue
             end
+        elseif item:IsA("StringValue") and cleanItemName(item.Name) == "Treasure Map" then
+            local xValue = item:FindFirstChild("x")
+            local yValue = item:FindFirstChild("y")
+            local zValue = item:FindFirstChild("z")
+            
+            if xValue and yValue and zValue then
+                print("Treasure Map with coordinates:", xValue.Value, yValue.Value, zValue.Value)
+                local count = itemCounts["Treasure Map"] or 0
+                itemCounts["Treasure Map"] = count + 1
+            else
+                if not xValue then
+                    warn("Treasure Map has no x value")
+                end
+                if not yValue then
+                    warn("Treasure Map has no y value")
+                end
+                if not zValue then
+                    warn("Treasure Map has no z value")
+                end
+            end
         else
-            warn("Item or Stack invalid :", item.Name)
+            warn("Item or Stack invalid:", item.Name)
         end
     end
 
     return itemCounts
-end
-
-local function countSpecialItems(player, specialItemNames)
-    local inventory = ReplicatedStorage:FindFirstChild("playerstats")
-        :FindFirstChild(player.Name)
-        :FindFirstChild("Inventory")
-    
-    if not inventory then
-        warn("Inventory not found for player :", player.Name)
-        return {}
-    end
-
-    local specialItemCounts = {}
-    local seenItems = {}
-    
-    local uniqueSpecialItemNames = {}
-    for _, specialItem in ipairs(specialItemNames) do
-        local cleanName = cleanItemName(specialItem)
-        if not seenItems[cleanName] then
-            table.insert(uniqueSpecialItemNames, specialItem)
-            seenItems[cleanName] = true
-        end
-    end
-
-    for _, specialItem in ipairs(uniqueSpecialItemNames) do
-        local count = 0
-        for _, item in ipairs(inventory:GetChildren()) do
-            if item:IsA("StringValue") and cleanItemName(item.Name) == cleanItemName(specialItem) then
-                count += 1
-            end
-        end
-        specialItemCounts[specialItem] = count
-    end
-
-    return specialItemCounts
 end
 
 local function formatNumberWithCommas(num)
@@ -82,8 +67,8 @@ end
 
 local itemCounts = countItemsInInventory(player)
 local specialItemName = {
-    "The Depths Key",
-    "Treasure Map"
+    "Treasure Map",
+    "The Depths Key"
 }
 
 local playerStats = ReplicatedStorage:FindFirstChild("playerstats")
@@ -141,7 +126,23 @@ for itemName, count in pairs(itemCounts) do
     if not table.find(_G.selectItems, itemName) then
         itemCount = itemCount + 1
         local highlightedItemName = highlightItemName(itemName)
-        if itemCount <= 40 then
+        if itemName == "Treasure Map" then
+            if itemCount <= 40 then
+                moreItemsText1 = moreItemsText1 .. highlightedItemName .. " : " .. formatNumberWithCommas(count) .. "\n"
+            elseif itemCount <= 80 then
+                moreItemsText2 = moreItemsText2 .. highlightedItemName .. " : " .. formatNumberWithCommas(count) .. "\n"
+            else
+                moreItemsText3 = moreItemsText3 .. highlightedItemName .. " : " .. formatNumberWithCommas(count) .. "\n"
+            end
+        elseif itemName == "The Depths Key" then
+            if itemCount <= 40 then
+                moreItemsText1 = moreItemsText1 .. highlightedItemName .. " : " .. formatNumberWithCommas(count) .. "\n"
+            elseif itemCount <= 80 then
+                moreItemsText2 = moreItemsText2 .. highlightedItemName .. " : " .. formatNumberWithCommas(count) .. "\n"
+            else
+                moreItemsText3 = moreItemsText3 .. highlightedItemName .. " : " .. formatNumberWithCommas(count) .. "\n"
+            end
+        elseif itemCount <= 40 then
             moreItemsText1 = moreItemsText1 .. highlightedItemName .. " : " .. formatNumberWithCommas(count) .. "\n"
         elseif itemCount <= 80 then
             moreItemsText2 = moreItemsText2 .. highlightedItemName .. " : " .. formatNumberWithCommas(count) .. "\n"
