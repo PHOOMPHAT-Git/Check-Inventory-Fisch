@@ -82,6 +82,7 @@ end
 
 local itemCounts = countItemsInInventory(player)
 local specialItemName = {
+    "The Depths Key",
     "Treasure Map"
 }
 
